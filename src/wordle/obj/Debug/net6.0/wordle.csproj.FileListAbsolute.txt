@@ -1,0 +1,12 @@
+C:\C#\wordle\src\wordle\bin\Debug\net6.0\wordle.deps.json
+C:\C#\wordle\src\wordle\bin\Debug\net6.0\wordle.dll
+C:\C#\wordle\src\wordle\bin\Debug\net6.0\wordle.pdb
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.csproj.AssemblyReference.cache
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.GeneratedMSBuildEditorConfig.editorconfig
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.AssemblyInfoInputs.cache
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.AssemblyInfo.cs
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.csproj.CoreCompileInputs.cache
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.dll
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\refint\wordle.dll
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\wordle.pdb
+C:\C#\wordle\src\wordle\obj\Debug\net6.0\ref\wordle.dll
