@@ -3,14 +3,28 @@ namespace Wordle.Service;
 public class InMemoryGameRepository : IGameRepository
 {
     ReaderWriterLockSlim _lockSlim = new();
-    Dictionary<int, Game> Games = new();
+    Dictionary<int, Game> _games = new();
+    Dictionary<string, GameMode> _gameModes = new();
+
+
+    public InMemoryGameRepository(IWordListHandler wordListHandler, IRandomWordListHandler randomWordListHandler)
+    {
+        _gameModes.Add("random", new RandomMode(randomWordListHandler, this));
+        _gameModes.Add("classic", new ClassicMode(wordListHandler, this));
+    }
+
+
+    public void ReturnModes(Dictionary<string, GameMode> gameModes)
+    {
+        _gameModes = gameModes;
+    }
 
     public Game? Fetch(int id)
     {
         try
         {
             _lockSlim.EnterReadLock();
-            var game = Games.GetValueOrDefault(id);
+            var game = _games.GetValueOrDefault(id);
             return game;
         }
         finally
@@ -19,16 +33,16 @@ public class InMemoryGameRepository : IGameRepository
         }
     }
 
-    public int Insert(CreateGame createGame)
+    public int Insert(Game game)
     {
         try
         {
             _lockSlim.EnterWriteLock();
 
-            var id = Games.LastOrDefault().Key + 1;
+            var id = _games.LastOrDefault().Key + 1;
 
-            Game game = new Game(createGame.SolutionWord);
-            Games.Add(id, game);
+
+            _games.Add(id, game);
             return id;
         }
         finally
@@ -36,4 +50,21 @@ public class InMemoryGameRepository : IGameRepository
             _lockSlim.ExitWriteLock();
         }
     }
+
+    public GameMode FetchMode(string gameMode)
+    {
+        try
+        {
+            _lockSlim.EnterReadLock();
+
+            var mode = _gameModes.GetValueOrDefault(gameMode);
+
+            return mode;
+        }
+        finally
+        {
+            _lockSlim.ExitReadLock();
+        }
+    }
+
 }

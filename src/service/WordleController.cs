@@ -1,27 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 namespace Wordle.Service;
 
-[Route("")]
+[Route("/api/v1/wordle")]
 [ApiController]
 
 public class WordleController : ControllerBase
 {
-
-    private GameManager _gameManager;
-    private IGameRepository _gameRepository;
-    private IWordListHandler _wordListHandler;
-    public WordleController(GameManager gameManager, IGameRepository gameRepository, IWordListHandler wordListHandler)
+    private GameMode _gameMode { get; init; }
+    private IGameRepository _gameRepository { get; init; }
+    public WordleController(GameMode gameMode, IGameRepository gameRepository)
     {
-        _gameManager = gameManager;
+        _gameMode = gameMode;
         _gameRepository = gameRepository;
-        _wordListHandler = wordListHandler;
     }
 
     [HttpPost]
-    public ActionResult StartGame()
+    public ActionResult StartGame(string gameMode)
     {
-        var id = _gameManager.StartGame();
-        return Ok(id);
+        var game = _gameMode.StartGame(gameMode);
+        var id = _gameRepository.Insert(game);
+        return Ok(new DataGame(id));
     }
 
     [Route("{gameId}")]
@@ -45,7 +43,8 @@ public class WordleController : ControllerBase
         GuessResult guessWord;
         try
         {
-            guessWord = _gameManager.Guess(gameId, guess.Guess);
+            var game = _gameRepository.Fetch(gameId);
+            guessWord = game._gameMode.Guess(gameId, guess.Guess);
         }
         catch (GuessWordNotValidException ex)
         {
@@ -59,5 +58,15 @@ public class WordleController : ControllerBase
         return Ok(guessWord);
     }
 
+}
+
+public class DataGame
+{
+    public int GameId { get; init; }
+
+    public DataGame(int id)
+    {
+        GameId = id;
+    }
 }
 
