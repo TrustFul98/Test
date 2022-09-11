@@ -7,7 +7,7 @@ builder.Services.AddControllers();
 
 IWordListHandler wordListHandler = new CSVWordListHandler(@"word-bank.csv", @"valid-words.csv");
 IRandomWordListHandler randomWordListHandler = new RandomWordListHandler();
-IGameRepository gameRepository = new InMemoryGameRepository();
+IGameRepository gameRepository = new InMemoryGameRepository(wordListHandler, randomWordListHandler);
 
 
 builder.Services.AddSingleton<RandomMode>();
@@ -19,13 +19,13 @@ builder.Services.AddSingleton<IWordListHandler>(wordListHandler);
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 
 
-Dictionary<string, Func<GameMode>> gameModes = new Dictionary<string, Func<GameMode>>()
-{
-    ["random"] = Func(new RandomMode(randomWordListHandler, gameRepository)),
-    ["classic"] = Func(new ClassicMode(wordListHandler, gameRepository))
-};
+// Dictionary<string, Func<GameMode>> gameModes = new Dictionary<string, Func<GameMode>>()
+// {
+//     ["random"] = Func(new RandomMode(randomWordListHandler, gameRepository)),
+//     ["classic"] = Func(new ClassicMode(wordListHandler, gameRepository))
+// };
 
-gameRepository.ReturnModes(gameModes);
+// gameRepository.ReturnModes(gameModes);
 
 var app = builder.Build();
 
