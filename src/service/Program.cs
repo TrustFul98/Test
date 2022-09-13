@@ -8,14 +8,17 @@ builder.Services.AddControllers();
 IWordListHandler wordListHandler = new CSVWordListHandler(@"word-bank.csv", @"valid-words.csv");
 IRandomWordListHandler randomWordListHandler = new RandomWordListHandler();
 IGameRepository gameRepository = new InMemoryGameRepository(wordListHandler, randomWordListHandler);
+// ILimitedTriesMode limitedTriesMode = new LimitedTriesMode(new )
 
 
+// builder.Services.AddSingleton<LimitedTriesMode>();
 builder.Services.AddSingleton<RandomMode>();
 builder.Services.AddSingleton<ClassicMode>();
-builder.Services.AddSingleton<GameMode, RandomMode>();
-builder.Services.AddSingleton<GameMode, ClassicMode>();
+builder.Services.AddSingleton<BasisMode, RandomMode>();
+builder.Services.AddSingleton<BasisMode, ClassicMode>();
 builder.Services.AddSingleton<IRandomWordListHandler>(randomWordListHandler);
 builder.Services.AddSingleton<IWordListHandler>(wordListHandler);
+// builder.Services.AddSingleton<ILimitedTriesMode>(limitedTriesMode);
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 
 

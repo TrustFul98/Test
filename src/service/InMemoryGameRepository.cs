@@ -4,7 +4,7 @@ public class InMemoryGameRepository : IGameRepository
 {
     ReaderWriterLockSlim _lockSlim = new();
     Dictionary<int, Game> _games = new();
-    Dictionary<string, GameMode> _gameModes = new();
+    Dictionary<string, BasisMode> _gameModes = new();
     
 
 
@@ -15,7 +15,7 @@ public class InMemoryGameRepository : IGameRepository
     }
 
 
-    public void ReturnModes(Dictionary<string, GameMode> gameModes)
+    public void ReturnModes(Dictionary<string, BasisMode> gameModes)
     {
         _gameModes = gameModes;
     }
@@ -52,7 +52,7 @@ public class InMemoryGameRepository : IGameRepository
         }
     }
 
-    public GameMode FetchMode(string gameMode)
+    public BasisMode FetchMode(string gameMode)
     {
         try
         {

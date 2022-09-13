@@ -2,17 +2,24 @@ using Wordle;
 
 namespace Wordle.Service;
 
-public abstract class GameMode
+public abstract class BasisMode : IGameMode
 {
     private IWordListHandler _wordListHandler;
     private IGameRepository _gameRepository;
 
-    public GameMode(IWordListHandler wordListHandler, IGameRepository gameRepository)
+    public BasisMode(IWordListHandler wordListHandler, IGameRepository gameRepository)
     {
         _wordListHandler = wordListHandler;
         _gameRepository = gameRepository;
     }
 
+    public virtual void ProveValidation(string guess)
+    {
+        if (!_wordListHandler.isValidWord(guess))
+        {
+            throw new GuessWordNotValidException();
+        }
+    }
 
     public Game StartGame(string gameMode)
     {
@@ -20,33 +27,21 @@ public abstract class GameMode
         var game = new Game(mode._wordListHandler.GetSolutionWord(), mode);
         return game;
     }
-    public GuessResult Guess(int id, string guess)
+    public virtual GuessResult Guess(int id, string guess)
     {
         var game = _gameRepository.Fetch(id);
-        try
-        {
-            if (!_wordListHandler.isValidWord(guess))
-            {
-                throw new GuessWordNotValidException();
-            }
-            if (game == null)
-            {
-                throw new GameNotFoundException();
-            }
-        }
-        catch (GuessWordNotValidException ex)
-        {
-            throw new GuessWordNotValidException();
-        }
-        catch (GameNotFoundException ex)
+
+        ProveValidation(guess);
+        if (game == null)
         {
             throw new GameNotFoundException();
         }
+
         var result = game.Guess(guess);
         return result;
     }
 
-    public static GuessResult GenerateResult(string solution, string guess)
+    public virtual GuessResult GenerateResult(string solution, string guess)
     {
         LetterMatch[] matches = new LetterMatch[solution.Length];
 

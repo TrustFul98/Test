@@ -16,9 +16,9 @@ public class Game
     private List<GuessResult> _guesses = new List<GuessResult>();
     public IReadOnlyList<GuessResult> Guesses => _guesses.ToList().AsReadOnly();
     public string _solution { get; init; }
-    public GameMode _gameMode { get; init; }
+    public BasisMode _gameMode { get; init; }
 
-    public Game(string solution, GameMode gameMode)
+    public Game(string solution, BasisMode gameMode)
     {
         _solution = solution;
         _gameMode = gameMode;
@@ -33,7 +33,7 @@ public class Game
     {
         isFinished = IsGameFinished(guess);
 
-        var result = GameMode.GenerateResult(_solution, guess);
+        var result = _gameMode.GenerateResult(_solution, guess);
 
         _guesses.Add(result);
 

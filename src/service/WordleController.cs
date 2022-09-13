@@ -6,9 +6,9 @@ namespace Wordle.Service;
 
 public class WordleController : ControllerBase
 {
-    private GameMode _gameMode { get; init; }
+    private BasisMode _gameMode { get; init; }
     private IGameRepository _gameRepository { get; init; }
-    public WordleController(GameMode gameMode, IGameRepository gameRepository)
+    public WordleController(BasisMode gameMode, IGameRepository gameRepository)
     {
         _gameMode = gameMode;
         _gameRepository = gameRepository;

@@ -4,6 +4,6 @@ public interface IGameRepository
 {
     abstract int Insert(Game game);
     Game? Fetch(int id);
-    GameMode FetchMode(string gameMode);
-    void ReturnModes(Dictionary<string, GameMode> gameModes);
+    BasisMode FetchMode(string gameMode);
+    void ReturnModes(Dictionary<string, BasisMode> gameModes);
 }
